@@ -13,9 +13,16 @@ import { plainToInstance } from 'class-transformer';
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
+  @ApiOperation({ summary: 'Create book' })
+  @ApiOkResponse({
+    type: BookResponse,
+    description: 'Book successfully created',
+  })
   @Post()
-  create(@Body() createBookDto: CreateBookDto) {
-    return this.bookService.create(createBookDto);
+  async create(@Body() createBookDto: CreateBookDto): Promise<BookResponse> {
+    const book = await this.bookService.create(createBookDto);
+
+    return plainToInstance(BookResponse, book);
   }
 
   @ApiOperation({ summary: 'Get all books with optional filters and sorting' })

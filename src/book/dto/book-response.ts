@@ -19,11 +19,11 @@ export class BookResponse {
   })
   thumbnailUrl?: string;
 
-  @ApiProperty({ example: "Unlocking Android: A Developer's Guide" })
+  @ApiProperty({ example: "Unlocking Android: A Developer's Guide." })
   shortDescription: string;
 
   @ApiProperty({
-    example: 'Android is an open source mobile phone platform based on the Linux kernel',
+    example: 'Android is an open source mobile phone platform based on the Linux kernel.',
   })
   longDescription: string;
 

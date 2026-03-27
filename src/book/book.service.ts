@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -15,8 +15,21 @@ export class BookService {
 
   constructor(@InjectModel(Book.name) private bookModel: PaginateModel<BookDocument>) {}
 
-  create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+  async create(createBookDto: CreateBookDto): Promise<Book> {
+    const { title } = createBookDto;
+
+    const existing = await this.bookModel.countDocuments({ title: { $eq: title } });
+
+    if (existing) {
+      this.logger.warn(`Book with title '${title}' already exists`);
+      throw new ConflictException('Book with current title already exists');
+    }
+
+    const createdBook = await this.bookModel.create(createBookDto);
+
+    this.logger.log(`Book '${title}' (ID: ${createdBook.id}) successfully created`);
+
+    return createdBook.toObject();
   }
 
   private buildFilter(query: BookQueryDto): Filter {
