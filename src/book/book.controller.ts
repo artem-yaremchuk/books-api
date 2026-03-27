@@ -3,6 +3,7 @@ import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import {
+  ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -52,9 +53,19 @@ export class BookController {
     };
   }
 
+  @ApiOperation({ summary: 'Get book by id' })
+  @ApiParam({ name: 'id', description: 'Id of the book', example: '65f1c7a4e52891827ad41234' })
+  @ApiOkResponse({
+    description: 'Book successfully retrieved',
+    type: BookResponse,
+  })
+  @ApiBadRequestResponse({ description: 'Invalid book ID' })
+  @ApiNotFoundResponse({ description: 'Book not found' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookService.findOne(+id);
+  async findOne(@Param('id', ObjectIdValidationPipe) bookId: string): Promise<BookResponse> {
+    const book = await this.bookService.findOne(bookId);
+
+    return plainToInstance(BookResponse, book);
   }
 
   @ApiOperation({ summary: 'Update book' })
@@ -63,6 +74,7 @@ export class BookController {
     description: 'Book successfully updated',
     type: BookResponse,
   })
+  @ApiBadRequestResponse({ description: 'Invalid book ID' })
   @ApiNotFoundResponse({ description: 'Book not found' })
   @Put(':id')
   async update(

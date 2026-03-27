@@ -86,8 +86,17 @@ export class BookService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  async findOne(bookId: string): Promise<Book> {
+    const book = await this.bookModel.findById(bookId).lean().exec();
+
+    if (!book) {
+      this.logger.error(`Book with ID '${bookId}' not found`);
+      throw new NotFoundException('Book not found');
+    }
+
+    this.logger.log(`Book with ID '${bookId}' successfully retrieved`);
+
+    return book;
   }
 
   async update(updateBookDto: UpdateBookDto, bookId: string): Promise<Book> {
@@ -95,7 +104,7 @@ export class BookService {
       .findOneAndUpdate(
         { _id: { $eq: bookId } },
         { $set: updateBookDto },
-        { lean: true, new: true },
+        { lean: true, returnDocument: 'after' },
       )
       .exec();
 
