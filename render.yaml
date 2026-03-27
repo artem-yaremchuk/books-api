@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: books-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    repo: https://github.com/artem-yaremchuk/books-api
+
+    buildCommand: |
+      npm install
+      npm run build
+
+    startCommand: npm run start:prod
+
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22
