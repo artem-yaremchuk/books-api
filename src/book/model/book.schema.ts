@@ -41,3 +41,7 @@ export class Book {
 export const BookSchema = SchemaFactory.createForClass(Book);
 
 BookSchema.plugin(paginate);
+
+BookSchema.index({ status: 1 });
+BookSchema.index({ publishedDate: -1 });
+BookSchema.index({ status: 1, publishedDate: -1 });
