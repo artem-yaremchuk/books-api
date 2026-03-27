@@ -15,6 +15,7 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import {
   ApiBadRequestResponse,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -39,7 +40,8 @@ export class BookController {
     type: BookResponse,
     description: 'Book successfully created',
   })
-  @ApiBadRequestResponse({ description: 'Bad request — validation failed' })
+  @ApiBadRequestResponse({ description: 'Bad request - validation failed' })
+  @ApiConflictResponse({ description: 'Book with current title already exists' })
   @Post()
   async create(@Body() createBookDto: CreateBookDto): Promise<BookResponse> {
     const book = await this.bookService.create(createBookDto);
