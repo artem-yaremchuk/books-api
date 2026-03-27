@@ -11,9 +11,13 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
       envFilePath: ['.env'],
     }),
     MongooseModule.forRootAsync({
-      useFactory: (configService: ConfigService): MongooseModuleOptions => ({
-        uri: configService.getOrThrow<string>('MONGO_URI'),
-      }),
+      useFactory: (configService: ConfigService) => {
+        const uri = configService.getOrThrow<string>('MONGO_URI');
+
+        return {
+          uri,
+        } satisfies MongooseModuleOptions;
+      },
       inject: [ConfigService],
     }),
     BookModule,
