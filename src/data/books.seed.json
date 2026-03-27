@@ -1,0 +1,124 @@
+[
+  {
+    "title": "Unlocking Android",
+    "pageCount": 416,
+    "publishedDate": "2009-04-01T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/unlocking-android.jpg",
+    "shortDescription": "Unlocking Android: A Developer's Guide.",
+    "longDescription": "Android is an open source mobile phone platform based on the Linux kernel and designed for mobile development.",
+    "status": "PUBLISH",
+    "authors": [
+      "W. Frank Ableson",
+      "Charlie Collins",
+      "Robi Sen"
+    ]
+  },
+  {
+    "title": "Clean Code",
+    "pageCount": 464,
+    "publishedDate": "2008-08-01T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/clean-code.jpg",
+    "shortDescription": "A handbook of agile software craftsmanship.",
+    "longDescription": "A practical guide to writing readable, maintainable, and testable code with real-world examples and principles.",
+    "status": "PUBLISH",
+    "authors": [
+      "Robert C. Martin"
+    ]
+  },
+  {
+    "title": "Designing Data-Intensive Applications",
+    "pageCount": 616,
+    "publishedDate": "2017-03-16T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/ddia.jpg",
+    "shortDescription": "The big ideas behind reliable, scalable, and maintainable systems.",
+    "longDescription": "Covers data models, storage engines, replication, partitioning, consistency, and stream processing for modern systems.",
+    "status": "PUBLISH",
+    "authors": [
+      "Martin Kleppmann"
+    ]
+  },
+  {
+    "title": "You Don't Know JS Yet",
+    "pageCount": 143,
+    "publishedDate": "2020-01-28T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/ydkjs.jpg",
+    "shortDescription": "A deep dive into the core mechanisms of JavaScript.",
+    "longDescription": "Explains scope, closures, objects, prototypes, types, async patterns, and the language internals in a practical style.",
+    "status": "PUBLISH",
+    "authors": [
+      "Kyle Simpson"
+    ]
+  },
+  {
+    "title": "NestJS in Action",
+    "pageCount": 320,
+    "publishedDate": "2023-05-10T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/nestjs-in-action.jpg",
+    "shortDescription": "Build enterprise-grade Node.js backends with NestJS.",
+    "longDescription": "Focuses on modules, controllers, providers, validation, authentication, testing, and scalable architecture patterns.",
+    "status": "PUBLISH",
+    "authors": [
+      "John Doe"
+    ]
+  },
+  {
+    "title": "MongoDB Fundamentals",
+    "pageCount": 280,
+    "publishedDate": "2022-09-12T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/mongodb-fundamentals.jpg",
+    "shortDescription": "Learn document databases and MongoDB basics.",
+    "longDescription": "Introduces documents, collections, indexes, aggregation, replication, and schema design fundamentals.",
+    "status": "PUBLISH",
+    "authors": [
+      "Jane Smith"
+    ]
+  },
+  {
+    "title": "Practical API Design",
+    "pageCount": 350,
+    "publishedDate": "2021-06-20T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/practical-api-design.jpg",
+    "shortDescription": "Best practices for designing robust APIs.",
+    "longDescription": "Covers resource modeling, error handling, pagination, versioning, authentication, and documentation.",
+    "status": "DRAFT",
+    "authors": [
+      "Emily Carter"
+    ]
+  },
+  {
+    "title": "TypeScript for Professionals",
+    "pageCount": 390,
+    "publishedDate": "2024-01-15T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/typescript-for-professionals.jpg",
+    "shortDescription": "Advanced TypeScript concepts for scalable apps.",
+    "longDescription": "Explores generics, utility types, type inference, decorators, patterns, and maintainable typing strategies.",
+    "status": "PUBLISH",
+    "authors": [
+      "Alex Turner"
+    ]
+  },
+  {
+    "title": "Refactoring Legacy Systems",
+    "pageCount": 410,
+    "publishedDate": "2019-11-03T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/refactoring-legacy-systems.jpg",
+    "shortDescription": "Strategies for improving old codebases safely.",
+    "longDescription": "Shows how to introduce tests, isolate risk, improve design, and modernize aging systems incrementally.",
+    "status": "DRAFT",
+    "authors": [
+      "Sarah Connor"
+    ]
+  },
+  {
+    "title": "PostgreSQL Essentials",
+    "pageCount": 305,
+    "publishedDate": "2018-07-09T00:00:00.000Z",
+    "thumbnailUrl": "https://example.com/books/postgresql-essentials.jpg",
+    "shortDescription": "Core PostgreSQL concepts and practical usage.",
+    "longDescription": "Introduces schema design, queries, indexing, transactions, constraints, and performance basics for application developers.",
+    "status": "PUBLISH",
+    "authors": [
+      "Michael Stone"
+    ]
+  }
+]
