@@ -39,6 +39,7 @@ export class BookController {
     type: BookResponse,
     description: 'Book successfully created',
   })
+  @ApiBadRequestResponse({ description: 'Bad request — validation failed' })
   @Post()
   async create(@Body() createBookDto: CreateBookDto): Promise<BookResponse> {
     const book = await this.bookService.create(createBookDto);

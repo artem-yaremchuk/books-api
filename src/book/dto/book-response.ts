@@ -17,7 +17,7 @@ export class BookResponse {
   @ApiProperty({
     example: 'https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson.jpg',
   })
-  thumbnailUrl?: string;
+  thumbnailUrl: string;
 
   @ApiProperty({ example: "Unlocking Android: A Developer's Guide." })
   shortDescription: string;
