@@ -18,9 +18,12 @@ export class BookService {
   async create(createBookDto: CreateBookDto): Promise<Book> {
     const { title } = createBookDto;
 
-    const existing = await this.bookModel.countDocuments({ title: { $eq: title } });
+    const existingBook = await this.bookModel
+      .findOne({ title: { $eq: title } })
+      .lean()
+      .exec();
 
-    if (existing) {
+    if (existingBook) {
       this.logger.warn(`Book with title '${title}' already exists`);
       throw new ConflictException('Book with current title already exists');
     }
@@ -74,7 +77,6 @@ export class BookService {
 
     if (!result.totalDocs) {
       this.logger.warn(`No books found`);
-      throw new NotFoundException('No books found');
     }
 
     return {
@@ -118,7 +120,14 @@ export class BookService {
     return updatedBook;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async remove(bookId: string): Promise<void> {
+    const deletedBook = await this.bookModel.findByIdAndDelete(bookId).lean().exec();
+
+    if (!deletedBook) {
+      this.logger.error(`Book with ID '${bookId}' not found`);
+      throw new NotFoundException('Book not found');
+    }
+
+    this.logger.log(`Book '${bookId}' successfully deleted`);
   }
 }

@@ -1,9 +1,22 @@
-import { Controller, Get, Post, Body, Param, Delete, Query, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Query,
+  Put,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import {
   ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -22,7 +35,7 @@ export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @ApiOperation({ summary: 'Create book' })
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     type: BookResponse,
     description: 'Book successfully created',
   })
@@ -69,7 +82,11 @@ export class BookController {
   }
 
   @ApiOperation({ summary: 'Update book' })
-  @ApiParam({ name: 'id', description: 'Id of the book to update' })
+  @ApiParam({
+    name: 'id',
+    description: 'Id of the book to update',
+    example: '65f1c7a4e52891827ad41234',
+  })
   @ApiOkResponse({
     description: 'Book successfully updated',
     type: BookResponse,
@@ -80,14 +97,24 @@ export class BookController {
   async update(
     @Param('id', ObjectIdValidationPipe) bookId: string,
     @Body() updateBookDto: UpdateBookDto,
-  ) {
+  ): Promise<BookResponse> {
     const updatedBook = await this.bookService.update(updateBookDto, bookId);
 
     return plainToInstance(BookResponse, updatedBook);
   }
 
+  @ApiOperation({ summary: 'Delete book' })
+  @ApiParam({
+    name: 'id',
+    description: 'Id of the book to delete',
+    example: '65f1c7a4e52891827ad41234',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid book ID' })
+  @ApiNoContentResponse({ description: 'Book successfully deleted' })
+  @ApiNotFoundResponse({ description: 'Book not found' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookService.remove(+id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ObjectIdValidationPipe) bookId: string): Promise<void> {
+    await this.bookService.remove(bookId);
   }
 }
