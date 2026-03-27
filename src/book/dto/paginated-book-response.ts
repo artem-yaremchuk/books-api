@@ -1,0 +1,22 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { BookResponse } from './book-response';
+
+export class PaginatedBookResponse {
+  @ApiProperty({ type: [BookResponse] })
+  books: BookResponse[];
+
+  @ApiProperty({
+    example: 20,
+    description: 'Total number of documents in collection that match a query',
+  })
+  totalDocs: number;
+
+  @ApiProperty({ example: 5, description: 'Limit documents per page' })
+  perPage: number;
+
+  @ApiProperty({ example: 1, description: 'Current page number' })
+  currentPage: number;
+
+  @ApiProperty({ example: 4, description: 'Total number of pages' })
+  totalPages: number;
+}

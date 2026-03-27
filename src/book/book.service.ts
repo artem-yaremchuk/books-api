@@ -1,15 +1,76 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { PaginateModel, PaginateResult } from 'mongoose';
+import { Book, BookDocument } from './model/book.schema';
+import { BookQueryDto } from './dto/book-query.dto';
+import { Filter } from './interfaces/filter.interface';
+import { SortOrder } from './enums/sort-order.enum';
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from './constants/pagination.constants';
 
 @Injectable()
 export class BookService {
+  private readonly logger = new Logger(BookService.name);
+
+  constructor(@InjectModel(Book.name) private bookModel: PaginateModel<BookDocument>) {}
+
   create(createBookDto: CreateBookDto) {
     return 'This action adds a new book';
   }
 
-  findAll() {
-    return `This action returns all book`;
+  private buildFilter(query: BookQueryDto): Filter {
+    const { status } = query;
+
+    const filter: Filter = {};
+
+    if (status) filter.status = status;
+
+    return filter;
+  }
+
+  private buildSort(query: BookQueryDto): Record<string, SortOrder> {
+    const sort: Record<string, SortOrder> = {};
+
+    if (query.publishedDate) {
+      sort.publishedDate = query.publishedDate;
+    }
+
+    return sort;
+  }
+
+  async findAll(query: BookQueryDto): Promise<{
+    books: Book[];
+    totalDocs: number;
+    perPage: number;
+    currentPage: number;
+    totalPages: number;
+  }> {
+    const { page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = query;
+
+    const filter = this.buildFilter(query);
+    const sort = this.buildSort(query);
+
+    const result: PaginateResult<Book> = await this.bookModel.paginate(filter, {
+      page,
+      limit,
+      sort,
+      lean: true,
+      leanWithId: false,
+    });
+
+    if (!result.totalDocs) {
+      this.logger.warn(`No books found`);
+      throw new NotFoundException('No books found');
+    }
+
+    return {
+      books: result.docs,
+      totalDocs: result.totalDocs,
+      perPage: result.limit,
+      currentPage: result.page ?? page,
+      totalPages: result.totalPages,
+    };
   }
 
   findOne(id: number) {

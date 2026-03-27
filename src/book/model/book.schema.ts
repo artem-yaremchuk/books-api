@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
-import { BookStatus } from './book-status.enum';
+import { BookStatus } from '../enums/book-status.enum';
 
 export type BookDocument = HydratedDocument<Book>;
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class Book {
   @Prop({ required: true })
   title: string;
@@ -16,8 +16,8 @@ export class Book {
   @Prop({ required: true })
   publishedDate: Date;
 
-  @Prop()
-  thumbnailUrl?: string;
+  @Prop({ required: true })
+  thumbnailUrl: string;
 
   @Prop({ required: true })
   shortDescription: string;
@@ -36,12 +36,6 @@ export class Book {
     type: [String],
   })
   authors: string[];
-
-  @Prop()
-  createdAt: Date;
-
-  @Prop()
-  updatedAt: Date;
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
