@@ -16,7 +16,7 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 
         return {
           uri,
-        } satisfies MongooseModuleOptions;
+        } as unknown as MongooseModuleOptions;
       },
       inject: [ConfigService],
     }),
