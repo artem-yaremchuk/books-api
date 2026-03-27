@@ -1,12 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, Put } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
-import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PaginatedBookResponse } from './dto/paginated-book-response';
 import { BookQueryDto } from './dto/book-query.dto';
 import { BookResponse } from './dto/book-response';
 import { plainToInstance } from 'class-transformer';
+import { ObjectIdValidationPipe } from './pipes/object-id-validation.pipe';
 
 @ApiTags('Book')
 @Controller('books')
@@ -50,9 +57,21 @@ export class BookController {
     return this.bookService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    return this.bookService.update(+id, updateBookDto);
+  @ApiOperation({ summary: 'Update book' })
+  @ApiParam({ name: 'id', description: 'Id of the book to update' })
+  @ApiOkResponse({
+    description: 'Book successfully updated',
+    type: BookResponse,
+  })
+  @ApiNotFoundResponse({ description: 'Book not found' })
+  @Put(':id')
+  async update(
+    @Param('id', ObjectIdValidationPipe) bookId: string,
+    @Body() updateBookDto: UpdateBookDto,
+  ) {
+    const updatedBook = await this.bookService.update(updateBookDto, bookId);
+
+    return plainToInstance(BookResponse, updatedBook);
   }
 
   @Delete(':id')

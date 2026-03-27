@@ -90,8 +90,23 @@ export class BookService {
     return `This action returns a #${id} book`;
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async update(updateBookDto: UpdateBookDto, bookId: string): Promise<Book> {
+    const updatedBook = await this.bookModel
+      .findOneAndUpdate(
+        { _id: { $eq: bookId } },
+        { $set: updateBookDto },
+        { lean: true, new: true },
+      )
+      .exec();
+
+    if (!updatedBook) {
+      this.logger.error(`Book with ID '${bookId}' not found`);
+      throw new NotFoundException('Book not found');
+    }
+
+    this.logger.log(`Book '${bookId}' successfully updated`);
+
+    return updatedBook;
   }
 
   remove(id: number) {
